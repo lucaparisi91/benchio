@@ -1,4 +1,3 @@
-MF=	Makefile-archer2
 
 # You will need to load some modules:
 # 
@@ -9,8 +8,7 @@ MF=	Makefile-archer2
 # module load cray-netcdf-hdf5parallel
 #
 
-
-FC=	ftn
+FC?=mpifort
 FFLAGS=-O3# $(shell adios2-config --fortran-flags)
 LFLAGS=#$(shell adios2-config --fortran-libs)
 
@@ -41,7 +39,7 @@ all:	$(EXE)
 $(EXE):	$(OBJ)
 	$(FC) $(FFLAGS) -o $@ $(OBJ) $(LFLAGS)
 
-$(OBJ):	$(MF)
+
 
 benchio.o: serial.o mpiio.o benchutil.o hdf5.o
 
