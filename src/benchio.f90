@@ -1,10 +1,13 @@
+
 program benchio
 
   use benchclock
   use benchcomm
   use mpiio
   use ioserial
+#ifdef USE_HDF5
   use iohdf5
+#endif
 
   implicit none
 
@@ -324,7 +327,11 @@ program benchio
            call mpiiowrite(filename, iodata, n1, n2, n3, iocomm)
 
         case(5)
-           call hdf5write(filename, iodata, n1, n2, n3, iocomm)
+#ifdef USE_HDF5
+            call hdf5write(filename, iodata, n1, n2, n3, iocomm)
+#endif
+            write(*,*) "HDF5 not enabled"
+            stop
 
         case(6)
            !call netcdfwrite(filename, iodata, n1, n2, n3, iocomm)
