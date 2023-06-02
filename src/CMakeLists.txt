@@ -12,8 +12,35 @@ endif()
 if ( ${USE_NETCDF} )
     list(APPEND SOURCE_FILES netcdf.f90 )
     add_compile_definitions( USE_NETCDF )
-    
 endif()
+
+if ( ${USE_ADIOS2} )
+    list(APPEND SOURCE_FILES adios.f90 )
+    add_compile_definitions( USE_ADIOS2 )
+    execute_process (
+    COMMAND bash -c "adios2-config --fortran-flags"
+    OUTPUT_VARIABLE ADIOS2_FORTRAN_FLAGS
+    )
+    execute_process (
+    COMMAND bash -c "adios2-config --fortran-libs"
+    OUTPUT_VARIABLE ADIOS2_LINK_FLAGS
+    )
+
+    string(STRIP ${ADIOS2_FORTRAN_FLAGS} ADIOS2_FORTRAN_FLAGS )
+    set( ADIOS2_FORTRAN_FLAGS2 ${ADIOS2_FORTRAN_FLAGS} )
+    separate_arguments(ADIOS2_FORTRAN_FLAGS UNIX_COMMAND "${ADIOS2_FORTRAN_FLAGS}")
+
+    string(STRIP ${ADIOS2_LINK_FLAGS} ADIOS2_LINK_FLAGS )
+    set( ADIOS2_LINK_FLAGS ${ADIOS2_LINK_FLAGS} )
+    separate_arguments(ADIOS2_LINK_FLAGS UNIX_COMMAND "${ADIOS2_LINK_FLAGS}")
+
+
+    add_compile_options( ${ADIOS2_FORTRAN_FLAGS} )
+    add_link_options( ${ADIOS2_LINK_FLAGS} )
+
+
+endif()
+
 
 
 set_source_files_properties(
@@ -32,7 +59,12 @@ if ( ${USE_HDF5} )
 
 endif()
 
+if ( ${USE_ADIOS2} )
 
-target_link_libraries( benchio PUBLIC MPI::MPI_Fortran)
+    target_link_libraries( benchio PUBLIC MPI::MPI_Fortran)
+
+endif()
+
+target_link_libraries( benchio PUBLIC MPI::MPI_Fortran )
 
 install(TARGETS benchio )

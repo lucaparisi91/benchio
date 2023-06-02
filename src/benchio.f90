@@ -11,7 +11,9 @@ program benchio
 #ifdef USE_NETCDF
   use ionetcdf
 #endif
-
+#ifdef USE_ADIOS2
+  use adios
+#endif
   implicit none
 
   integer, parameter :: numiolayer = 7
@@ -344,7 +346,11 @@ program benchio
          stop
 
         case(7)
-           !call adioswrite(filename, iodata, n1, n2, n3, iocomm)
+#ifdef USE_ADIOS2
+         call adioswrite(filename, iodata, n1, n2, n3, iocomm)
+#endif
+         write(*,*) "ADIOS2 not enabled"
+         stop
 
         case default
            write(*,*) "Illegal value of iolayer = ", iolayer

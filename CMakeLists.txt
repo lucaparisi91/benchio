@@ -5,7 +5,7 @@ cmake_policy(SET CMP0074 NEW)
 
 option(USE_HDF5 "Test HDF5 write" ON )
 option(USE_NETCDF "Test NETCDF write" ON )
-
+option(USE_ADIOS2 "Test ADIOS2 write" ON )
 
 if ( ${USE_HDF5} )
     find_package(HDF5 COMPONENTS Fortran HL)
