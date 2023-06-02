@@ -8,6 +8,9 @@ program benchio
 #ifdef USE_HDF5
   use iohdf5
 #endif
+#ifdef USE_NETCDF
+  use ionetcdf
+#endif
 
   implicit none
 
@@ -334,7 +337,11 @@ program benchio
             stop
 
         case(6)
-           !call netcdfwrite(filename, iodata, n1, n2, n3, iocomm)
+#ifdef USE_NETCDF
+            call netcdfwrite(filename, iodata, n1, n2, n3, iocomm)
+#endif
+         write(*,*) "NETCDF not enabled"
+         stop
 
         case(7)
            !call adioswrite(filename, iodata, n1, n2, n3, iocomm)

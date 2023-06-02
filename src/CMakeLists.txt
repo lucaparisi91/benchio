@@ -3,11 +3,18 @@ cmake_minimum_required(VERSION 3.2)
 
 set(SOURCE_FILES benchio.f90 benchutil.f90 mpiio.f90 serial.f90 )
 
-
 if ( ${USE_HDF5} )
     list(APPEND SOURCE_FILES hdf5.f90 )
     add_compile_definitions( USE_HDF5 )
+
 endif()
+
+if ( ${USE_NETCDF} )
+    list(APPEND SOURCE_FILES netcdf.f90 )
+    add_compile_definitions( USE_NETCDF )
+    
+endif()
+
 
 set_source_files_properties(
   benchio.f90
@@ -15,7 +22,17 @@ set_source_files_properties(
 )
 
 
+
+
+
 add_executable( benchio ${SOURCE_FILES})
+
+if ( ${USE_HDF5} )
+    target_link_libraries( benchio PUBLIC MPI::MPI_Fortran)
+
+endif()
+
+
 target_link_libraries( benchio PUBLIC MPI::MPI_Fortran)
 
 install(TARGETS benchio )
