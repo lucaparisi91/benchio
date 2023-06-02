@@ -1,5 +1,5 @@
  # benchio
-Simple Fortran parallel IO benchmark for teaching and benchmarking purposes.
+Simple Fortran parallel IO benchmark for teaching and benchmarking purposes, forked from David Henty's https://github.com/davidhenty/benchio.
 
 Benchio builds on a one-dimensional parallel IO benchmark previously
 developed under the EU-funded EUFORIA project. See "High Performance
