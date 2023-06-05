@@ -56,6 +56,7 @@ add_executable( benchio ${SOURCE_FILES})
 
 if ( ${USE_HDF5} )
     target_link_libraries( benchio PUBLIC hdf5::hdf5_fortran )
+    target_include_directories( benchio PUBLIC ${HDF5_Fortran_INCLUDE_DIRS} )
 
 endif()
 
