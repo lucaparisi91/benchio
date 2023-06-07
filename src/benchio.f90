@@ -165,6 +165,21 @@ program benchio
      dostripe(:) = .true.
   end if
 
+#ifndef USE_HDF5
+  doio(5) = .false.
+#endif
+
+#ifndef USE_NETCDF
+  doio(6) = .false.
+#endif
+
+#ifndef USE_ADIOS2
+  doio(7) = .false.
+#endif
+
+  
+
+
   ! Set 3D processor grid
 
   dims(:) = 0
@@ -213,6 +228,9 @@ program benchio
   ! Set up nodal stuff
 
   call initbenchnode(cartcomm)
+
+
+
 
   if (rank == 0) then
 
@@ -330,27 +348,21 @@ program benchio
 
         case(4)
            call mpiiowrite(filename, iodata, n1, n2, n3, iocomm)
-
-        case(5)
 #ifdef USE_HDF5
+        case(5)
             call hdf5write(filename, iodata, n1, n2, n3, iocomm)
 #endif
-            write(*,*) "HDF5 not enabled"
-            stop
 
-        case(6)
+
 #ifdef USE_NETCDF
+        case(6)
             call netcdfwrite(filename, iodata, n1, n2, n3, iocomm)
 #endif
-         write(*,*) "NETCDF not enabled"
-         stop
 
-        case(7)
 #ifdef USE_ADIOS2
+        case(7)
          call adioswrite(filename, iodata, n1, n2, n3, iocomm)
 #endif
-         write(*,*) "ADIOS2 not enabled"
-         stop
 
         case default
            write(*,*) "Illegal value of iolayer = ", iolayer
