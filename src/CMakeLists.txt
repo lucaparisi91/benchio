@@ -12,6 +12,7 @@ endif()
 if ( ${USE_NETCDF} )
     list(APPEND SOURCE_FILES netcdf.f90 )
     add_compile_definitions( USE_NETCDF )
+
 endif()
 
 if ( ${USE_ADIOS2} )
@@ -68,6 +69,8 @@ endif()
 
 if ( ${USE_NETCDF})
     target_link_libraries (benchio PUBLIC ${NETCDF_LIBRARIES})
+    target_include_directories(  benchio PUBLIC ${NETCDF_INCLUDES})
+
 endif()
 
 target_link_libraries( benchio PUBLIC MPI::MPI_Fortran )
