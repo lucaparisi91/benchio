@@ -1,13 +1,22 @@
+
+
 module adios
 
   use mpi
   use adios2
   implicit none
-  
+
+
+
+
 
 contains
 
+
 subroutine adioswrite(filename, iodata, n1, n2, n3, cartcomm)
+
+  use build_info
+
 
 ! ADIOS variables
   type(adios2_adios) :: adios2obj
@@ -17,6 +26,7 @@ subroutine adioswrite(filename, iodata, n1, n2, n3, cartcomm)
   
   integer, parameter :: ndim = 3
   character*(*) :: filename
+
   
   integer :: n1, n2, n3
   double precision, dimension(0:n1+1,0:n2+1,0:n3+1) :: iodata
@@ -29,10 +39,15 @@ subroutine adioswrite(filename, iodata, n1, n2, n3, cartcomm)
 
   integer, dimension(ndim) :: dims, coords
   logical, dimension(ndim) :: periods
+  
+  integer, parameter :: maxlen = max_path_length
+  character*(maxlen) :: adios_config_filename
+
+  adios_config_filename = benchio_install_dir //"/share/adios2.xml"
 
 
 ! initialise ADIOS using the MPI communicator and config file
-  call adios2_init(adios2obj, "adios2.xml",cartcomm, ierr)
+  call adios2_init(adios2obj, adios_config_filename,cartcomm, ierr)
   call adios2_declare_io(io, adios2obj, 'Output', ierr )
         
   call MPI_Comm_size(cartcomm, size, ierr)

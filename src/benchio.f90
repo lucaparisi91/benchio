@@ -16,6 +16,9 @@ program benchio
 #endif
   implicit none
 
+
+
+
   integer, parameter :: numiolayer = 7
   integer, parameter :: numstriping = 3
   integer, parameter :: maxlen = 64

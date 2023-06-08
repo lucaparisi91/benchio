@@ -1,7 +1,12 @@
 
 cmake_minimum_required(VERSION 3.2)
 
-set(SOURCE_FILES benchio.f90 benchutil.f90 mpiio.f90 serial.f90 )
+set(SOURCE_FILES benchio.f90 benchutil.f90 mpiio.f90 serial.f90 build_info.f90 )
+
+configure_file (
+    "${PROJECT_SOURCE_DIR}/src/build_info.f90.in"
+    "${PROJECT_SOURCE_DIR}/src/build_info.f90"
+)
 
 if ( ${USE_HDF5} )
     list(APPEND SOURCE_FILES hdf5.f90 )
@@ -45,8 +50,7 @@ endif()
 
 
 set_source_files_properties(
-  benchio.f90
-  PROPERTIES Fortran_PREPROCESS ON
+  benchio.f90 adios.f90 build_info.f90 PROPERTIES Fortran_PREPROCESS ON
 )
 
 
@@ -70,6 +74,8 @@ endif()
 if ( ${USE_NETCDF})
     target_link_libraries (benchio PUBLIC ${NETCDF_LIBRARIES})
     target_include_directories(  benchio PUBLIC ${NETCDF_INCLUDES})
+    install(FILES adios2.xml DESTINATION share)
+
 
 endif()
 
