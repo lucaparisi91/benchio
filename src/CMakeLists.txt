@@ -48,14 +48,12 @@ if ( ${USE_ADIOS2} )
 endif()
 
 
-
 set_source_files_properties(
   benchio.f90 adios.f90 build_info.f90 PROPERTIES Fortran_PREPROCESS ON
 )
 
 
-
-
+add_compile_options( -ffree-line-length-0 )
 
 add_executable( benchio ${SOURCE_FILES})
 
